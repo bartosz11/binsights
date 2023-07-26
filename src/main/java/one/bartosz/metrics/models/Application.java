@@ -11,10 +11,20 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+    @Column(unique = true)
     private String name;
+    @Column(unique = true)
     private String influxDBBucketName;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<ApplicationMetricsSchema> schemas;
+
+    public Application() {}
+
+    public Application(ApplicationCDO cdo) {
+        this.name = cdo.getName();
+        String dbBucketName = cdo.getInfluxDBBucketName();
+        this.influxDBBucketName = !(dbBucketName == null || dbBucketName.isBlank() || dbBucketName.isEmpty()) ? dbBucketName : this.name;
+    }
 
     public UUID getId() {
         return id;
