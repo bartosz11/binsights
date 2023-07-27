@@ -61,6 +61,16 @@ public class ApplicationMetricsSchemaService {
     public ApplicationMetricsSchema getSchemaById(UUID id) throws EntityNotFoundException {
         return retrieveEntity(id);
     }
+
+    public List<ApplicationMetricsSchema> getAllApplicationSchemasByApplication(UUID id) {
+        return applicationMetricsSchemaRepository.findAllApplicationMetricsSchemasByApplicationId(id);
+    }
+
+    public void changeSchemaStatus(UUID id, boolean enable) throws EntityNotFoundException {
+        ApplicationMetricsSchema schema = retrieveEntity(id);
+        schema.setEnabled(enable);
+        applicationMetricsSchemaRepository.save(schema);
+    }
     //entity - whatever the service is supposed to handle
     private ApplicationMetricsSchema retrieveEntity(UUID id) throws EntityNotFoundException {
         return applicationMetricsSchemaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Application metrics schema with given ID couldn't be found."));

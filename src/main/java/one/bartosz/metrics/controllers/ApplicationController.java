@@ -74,4 +74,11 @@ public class ApplicationController {
         ApplicationMetricsSchema applicationMetricsSchema = applicationMetricsSchemaService.createApplicationSchema(id, cdo);
         return new Response(HttpStatus.CREATED).addAdditionalData(applicationMetricsSchema).toResponseEntity();
     }
+
+    @GetMapping(path = "/{id}/schemas", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Response> getAllAppSchemas(@PathVariable UUID id) {
+        List<ApplicationMetricsSchema> allApplicationSchemasByApplication = applicationMetricsSchemaService.getAllApplicationSchemasByApplication(id);
+        return new Response(HttpStatus.OK).addAdditionalData(allApplicationSchemasByApplication).toResponseEntity();
+    }
 }
