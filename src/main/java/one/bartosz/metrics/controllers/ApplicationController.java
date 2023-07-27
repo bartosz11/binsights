@@ -6,6 +6,7 @@ import one.bartosz.metrics.exceptions.EntityNotFoundException;
 import one.bartosz.metrics.exceptions.InvalidNameException;
 import one.bartosz.metrics.exceptions.SchemaVersionPresentException;
 import one.bartosz.metrics.models.*;
+import one.bartosz.metrics.services.ApplicationMetricsSchemaService;
 import one.bartosz.metrics.services.ApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,11 @@ import java.util.UUID;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
+    private final ApplicationMetricsSchemaService applicationMetricsSchemaService;
 
-    public ApplicationController(ApplicationService applicationService) {
+    public ApplicationController(ApplicationService applicationService, ApplicationMetricsSchemaService applicationMetricsSchemaService) {
         this.applicationService = applicationService;
+        this.applicationMetricsSchemaService = applicationMetricsSchemaService;
     }
 
     @PostMapping(path = "", produces = "application/json")
@@ -68,7 +71,7 @@ public class ApplicationController {
     @PostMapping(path = "/{id}/schema", produces = "application/json")
     @ResponseBody
     public ResponseEntity<Response> createNewSchema(@PathVariable UUID id, @RequestBody @Valid ApplicationMetricsSchemaCDO cdo) throws SchemaVersionPresentException, DuplicateFieldException, EntityNotFoundException {
-        ApplicationMetricsSchema applicationMetricsSchema = applicationService.createApplicationSchema(id, cdo);
+        ApplicationMetricsSchema applicationMetricsSchema = applicationMetricsSchemaService.createApplicationSchema(id, cdo);
         return new Response(HttpStatus.CREATED).addAdditionalData(applicationMetricsSchema).toResponseEntity();
     }
 }
