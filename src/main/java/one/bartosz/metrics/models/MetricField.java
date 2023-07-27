@@ -17,6 +17,14 @@ public class MetricField {
     @ManyToOne
     private ApplicationMetricsSchema schema;
 
+    public MetricField() {}
+
+    public MetricField(MetricFieldCDO cdo) {
+        this.name = cdo.getName();
+        this.description = cdo.getDescription();
+        this.type = cdo.getType();
+    }
+
     public UUID getId() {
         return id;
     }

@@ -1,12 +1,11 @@
 package one.bartosz.metrics.controllers;
 
 import jakarta.validation.Valid;
+import one.bartosz.metrics.exceptions.DuplicateFieldException;
 import one.bartosz.metrics.exceptions.EntityNotFoundException;
 import one.bartosz.metrics.exceptions.InvalidNameException;
-import one.bartosz.metrics.models.Application;
-import one.bartosz.metrics.models.ApplicationCDO;
-import one.bartosz.metrics.models.RenameRequest;
-import one.bartosz.metrics.models.Response;
+import one.bartosz.metrics.exceptions.SchemaVersionPresentException;
+import one.bartosz.metrics.models.*;
 import one.bartosz.metrics.services.ApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,5 +63,12 @@ public class ApplicationController {
     public ResponseEntity<Response> renameApplication(@PathVariable UUID id, @Valid @RequestBody RenameRequest renameRequest) throws InvalidNameException, EntityNotFoundException {
         Application application = applicationService.renameApplication(id, renameRequest);
         return new Response(HttpStatus.OK).addAdditionalData(application).toResponseEntity();
+    }
+
+    @PostMapping(path = "/{id}/schema", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Response> createNewSchema(@PathVariable UUID id, @RequestBody @Valid ApplicationMetricsSchemaCDO cdo) throws SchemaVersionPresentException, DuplicateFieldException, EntityNotFoundException {
+        ApplicationMetricsSchema applicationMetricsSchema = applicationService.createApplicationSchema(id, cdo);
+        return new Response(HttpStatus.CREATED).addAdditionalData(applicationMetricsSchema).toResponseEntity();
     }
 }

@@ -16,7 +16,13 @@ public class ApplicationMetricsSchema {
     private Set<MetricField> fields;
     @ManyToOne
     private Application application;
-
+    
+    public ApplicationMetricsSchema() {}
+    public ApplicationMetricsSchema(ApplicationMetricsSchemaCDO cdo) {
+        cdo.getMetricFields().forEach(fieldCDO -> fields.add(new MetricField(fieldCDO).setSchema(this)));
+        this.version = cdo.getVersion();
+        this.enabled = cdo.isEnabled();
+    }
     public UUID getId() {
         return id;
     }
@@ -53,12 +59,12 @@ public class ApplicationMetricsSchema {
         return this;
     }
 
-    public Application getService() {
+    public Application getApplication() {
         return application;
     }
 
-    public ApplicationMetricsSchema setService(Application service) {
-        this.application = service;
+    public ApplicationMetricsSchema setApplication(Application application) {
+        this.application = application;
         return this;
     }
 }
