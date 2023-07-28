@@ -19,6 +19,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
+    private long lastUpdated;
 
     public UUID getId() {
         return id;
@@ -82,4 +83,12 @@ public class User implements UserDetails {
         return true;
     }
 
+    public long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public User setLastUpdated(long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+        return this;
+    }
 }
