@@ -27,21 +27,21 @@ public class ApplicationController {
         this.applicationMetricsSchemaService = applicationMetricsSchemaService;
     }
 
-    @PostMapping(path = "", produces = "application/json")
+    @PostMapping(path = "")
     @ResponseBody
     public ResponseEntity<Response> createApplication(@RequestBody ApplicationCDO cdo) throws InvalidNameException {
         Application application = applicationService.createApplication(cdo);
         return new Response(HttpStatus.CREATED).addAdditionalData(application).toResponseEntity();
     }
 
-    @DeleteMapping(path = "/{id}", produces = "application/json")
+    @DeleteMapping(path = "/{id}")
     @ResponseBody
     public ResponseEntity<Response> deleteApplication(@PathVariable UUID id) throws EntityNotFoundException {
         applicationService.deleteApplication(id);
         return new Response(HttpStatus.NO_CONTENT).toResponseEntity();
     }
 
-    @GetMapping(path = "/{identifier}", produces = "application/json")
+    @GetMapping(path = "/{identifier}")
     @ResponseBody
     public ResponseEntity<Response> getApplicationById(@PathVariable String identifier) throws EntityNotFoundException {
         try {
@@ -54,28 +54,28 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping(path = "", produces = "application/json")
+    @GetMapping(path = "")
     @ResponseBody
     public ResponseEntity<Response> getAllApplications() {
         List<Application> allApplications = applicationService.getAllApplications();
         return new Response(HttpStatus.OK).addAdditionalData(allApplications).toResponseEntity();
     }
 
-    @PatchMapping(path = "/{id}", produces = "application/json")
+    @PatchMapping(path = "/{id}")
     @ResponseBody
     public ResponseEntity<Response> renameApplication(@PathVariable UUID id, @Valid @RequestBody RenameRequest renameRequest) throws InvalidNameException, EntityNotFoundException {
         Application application = applicationService.renameApplication(id, renameRequest);
         return new Response(HttpStatus.OK).addAdditionalData(application).toResponseEntity();
     }
 
-    @PostMapping(path = "/{id}/schema", produces = "application/json")
+    @PostMapping(path = "/{id}/schema")
     @ResponseBody
     public ResponseEntity<Response> createNewSchema(@PathVariable UUID id, @RequestBody @Valid ApplicationMetricsSchemaCDO cdo) throws SchemaVersionPresentException, DuplicateFieldException, EntityNotFoundException {
         ApplicationMetricsSchema applicationMetricsSchema = applicationMetricsSchemaService.createApplicationSchema(id, cdo);
         return new Response(HttpStatus.CREATED).addAdditionalData(applicationMetricsSchema).toResponseEntity();
     }
 
-    @GetMapping(path = "/{id}/schemas", produces = "application/json")
+    @GetMapping(path = "/{id}/schemas")
     @ResponseBody
     public ResponseEntity<Response> getAllAppSchemas(@PathVariable UUID id) {
         List<ApplicationMetricsSchema> allApplicationSchemasByApplication = applicationMetricsSchemaService.getAllApplicationSchemasByApplication(id);

@@ -23,21 +23,21 @@ public class ApplicationMetricsSchemaController {
     //Create and list all by app id endpoints are located in ApplicationController
     //There's no update endpoint - for some reason we allow multiple schemas and versioning of them
 
-    @DeleteMapping(path = "/{id}", produces = "application/json")
+    @DeleteMapping(path = "/{id}")
     @ResponseBody
     public ResponseEntity<Response> deleteSchemaById(@PathVariable UUID id) throws EntityNotFoundException {
         applicationMetricsSchemaService.deleteSchema(id);
         return new Response(HttpStatus.NO_CONTENT).toResponseEntity();
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/{id}")
     @ResponseBody
     public ResponseEntity<Response> getSchemaById(@PathVariable UUID id) throws EntityNotFoundException {
         ApplicationMetricsSchema schemaById = applicationMetricsSchemaService.getSchemaById(id);
         return new Response(HttpStatus.OK).addAdditionalData(schemaById).toResponseEntity();
     }
 
-    @PatchMapping(path = "/{id}/status", produces = "application/json")
+    @PatchMapping(path = "/{id}/status")
     @ResponseBody
     public ResponseEntity<Response> changeSchemaStatus(@PathVariable UUID id, @RequestParam boolean enable) throws EntityNotFoundException {
         applicationMetricsSchemaService.changeSchemaStatus(id, enable);
