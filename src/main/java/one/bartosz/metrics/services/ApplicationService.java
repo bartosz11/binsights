@@ -32,6 +32,7 @@ public class ApplicationService {
 
     public void deleteApplication(UUID id) throws EntityNotFoundException {
         Application application = retrieveEntity(id);
+        //todo influxdb logic?
         applicationRepository.delete(application);
     }
 
