@@ -1,13 +1,12 @@
 package one.bartosz.metrics.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,9 +16,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     private String username;
+    @JsonIgnore
     private String password;
     private boolean enabled;
     private long lastUpdated;
+    @OneToMany
+    @JsonIgnore
+    private Set<InviteCode> inviteCodes;
 
     public UUID getId() {
         return id;
@@ -89,6 +92,15 @@ public class User implements UserDetails {
 
     public User setLastUpdated(long lastUpdated) {
         this.lastUpdated = lastUpdated;
+        return this;
+    }
+
+    public Set<InviteCode> getInviteCodes() {
+        return inviteCodes;
+    }
+
+    public User setInviteCodes(Set<InviteCode> inviteCodes) {
+        this.inviteCodes = inviteCodes;
         return this;
     }
 }
