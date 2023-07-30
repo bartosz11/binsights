@@ -16,7 +16,7 @@ public class InviteCode {
     private String id;
     private long expiresOn;
     @ManyToOne
-    private User createdBy;
+    private User user;
 
     public String getId() {
         return id;
@@ -36,12 +36,12 @@ public class InviteCode {
         return this;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
+    public User getUser() {
+        return user;
     }
 
-    public InviteCode setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
+    public InviteCode setUser(User user) {
+        this.user = user;
         return this;
     }
 }

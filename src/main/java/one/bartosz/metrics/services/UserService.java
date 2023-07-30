@@ -5,6 +5,7 @@ import one.bartosz.metrics.exceptions.InvalidPasswordException;
 import one.bartosz.metrics.exceptions.UserNotFoundException;
 import one.bartosz.metrics.exceptions.UsernameAlreadyTakenException;
 import one.bartosz.metrics.models.AuthRequest;
+import one.bartosz.metrics.models.InviteCode;
 import one.bartosz.metrics.models.User;
 import one.bartosz.metrics.repositories.InviteCodeRepository;
 import one.bartosz.metrics.repositories.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -36,7 +38,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User createNewUser(AuthRequest authRequest, String inviteCode) throws InvalidInviteCodeException, UsernameAlreadyTakenException, InvalidPasswordException {
-        if ((userRepository.count() != 0) && !inviteCodeRepository.existsById(inviteCode)) throw new InvalidInviteCodeException("Given invite code doesn't exist.");
+        if ((userRepository.count() != 0) && !validateInviteCode(inviteCode)) throw new InvalidInviteCodeException("Given invite code is invalid.");
         String username = authRequest.getUsername();
         String passwordRaw = authRequest.getPassword();
         if (userRepository.existsByUsername(username)) throw new UsernameAlreadyTakenException("Given username is already taken.");
@@ -44,6 +46,18 @@ public class UserService implements UserDetailsService {
         //it's meant to be a one time use code
         inviteCodeRepository.deleteById(inviteCode);
         return userRepository.save(new User().setUsername(username).setPassword(passwordEncoder.encode(passwordRaw)).setEnabled(true).setLastUpdated(Instant.now().toEpochMilli()));
+    }
+
+    private boolean validateInviteCode(String inviteCode) {
+        if (inviteCode == null) return false;
+        Optional<InviteCode> byId = inviteCodeRepository.findById(inviteCode);
+        if (byId.isEmpty()) return false;
+        InviteCode invite = byId.get();
+        if (!(invite.getExpiresOn() > Instant.now().getEpochSecond())) {
+            inviteCodeRepository.delete(invite);
+            return false;
+        }
+        return true;
     }
 
 }
