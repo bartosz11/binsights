@@ -48,13 +48,12 @@ public class ApplicationMetricsSchemaService {
         //"assemble" the schema, I guess
         ApplicationMetricsSchema schema = new ApplicationMetricsSchema(cdo).setApplication(application);
         application.getSchemas().add(schema);
-        //should cascade :troll:
-        applicationRepository.save(application);
         return applicationMetricsSchemaRepository.save(schema);
     }
 
     public void deleteSchema(UUID id) throws EntityNotFoundException {
         ApplicationMetricsSchema applicationMetricsSchema = retrieveEntity(id);
+        applicationMetricsSchema.getApplication().getSchemas().remove(applicationMetricsSchema);
         applicationMetricsSchemaRepository.delete(applicationMetricsSchema);
     }
 
@@ -62,8 +61,9 @@ public class ApplicationMetricsSchemaService {
         return retrieveEntity(id);
     }
 
-    public List<ApplicationMetricsSchema> getAllApplicationSchemasByApplication(UUID id) {
-        return applicationMetricsSchemaRepository.findAllApplicationMetricsSchemasByApplicationId(id);
+    public List<ApplicationMetricsSchema> getAllApplicationSchemasByApplication(UUID id) throws EntityNotFoundException {
+        Application application = retrieveApplication(id);
+        return applicationMetricsSchemaRepository.findAllApplicationMetricsSchemasByApplication(application);
     }
 
     public void changeSchemaStatus(UUID id, boolean enable) throws EntityNotFoundException {

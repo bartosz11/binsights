@@ -1,13 +1,11 @@
 package one.bartosz.metrics.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import one.bartosz.metrics.StringIDGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name = "invite_codes")
 public class InviteCode {
 
     @Id

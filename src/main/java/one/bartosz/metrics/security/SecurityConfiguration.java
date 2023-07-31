@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -32,8 +30,8 @@ public class SecurityConfiguration {
                         //some routes that may be utilized by client side routers on frontend
                         //.requestMatchers("/dashboard/**", "/auth/**").permitAll()
                         //.requestMatchers("/assets/**").permitAll()
-                        //all login requests
-                        .requestMatchers("/api/auth/login").permitAll()
+                        //all login and register requests
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                         //actuator requests
                         .requestMatchers("/app/**").permitAll()
                         .anyRequest().authenticated());
@@ -48,8 +46,4 @@ public class SecurityConfiguration {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

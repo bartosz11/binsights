@@ -1,21 +1,25 @@
 package one.bartosz.metrics.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Table(name = "applications")
 public class Application {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(unique = true)
     private String name;
     @Column(unique = true)
     private String influxDBBucketName;
     @OneToMany(cascade = CascadeType.ALL)
+    //there's a dedicated endpoint for fetching schemas of an application
+    @JsonIgnore
     private Set<ApplicationMetricsSchema> schemas;
 
     public Application() {}

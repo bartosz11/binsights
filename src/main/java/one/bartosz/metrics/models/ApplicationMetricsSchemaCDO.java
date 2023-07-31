@@ -16,6 +16,7 @@ public class ApplicationMetricsSchemaCDO {
     @NotNull
     private boolean enabled;
     //Using a Set to ensure there are no duplicates partially
+    @NotNull
     private Set<@Valid MetricFieldCDO> metricFields;
 
     public String getVersion() {

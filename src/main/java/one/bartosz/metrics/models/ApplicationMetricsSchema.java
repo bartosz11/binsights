@@ -2,13 +2,15 @@ package one.bartosz.metrics.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Table(name = "application_metrics_schemas")
 public class ApplicationMetricsSchema {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String version;
     private boolean enabled;
@@ -19,6 +21,8 @@ public class ApplicationMetricsSchema {
     
     public ApplicationMetricsSchema() {}
     public ApplicationMetricsSchema(ApplicationMetricsSchemaCDO cdo) {
+        //I don't know if I should initialize it but I guess it works
+        this.fields = new HashSet<>();
         cdo.getMetricFields().forEach(fieldCDO -> fields.add(new MetricField(fieldCDO).setSchema(this)));
         this.version = cdo.getVersion();
         this.enabled = cdo.isEnabled();

@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByUsername(username)) throw new UsernameAlreadyTakenException("Given username is already taken.");
         if (!passwordRaw.matches(PASSWORD_VALIDATION_PATTERN)) throw new InvalidPasswordException("Invalid password. A valid password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and must consist of at least 8 characters.");
         //it's meant to be a one time use code
-        inviteCodeRepository.deleteById(inviteCode);
+        if (inviteCode != null) inviteCodeRepository.deleteById(inviteCode);
         return userRepository.save(new User().setUsername(username).setPassword(passwordEncoder.encode(passwordRaw)).setEnabled(true).setLastUpdated(Instant.now().toEpochMilli()));
     }
 

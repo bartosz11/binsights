@@ -1,20 +1,23 @@
 package one.bartosz.metrics.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import one.bartosz.metrics.models.enums.MetricFieldType;
 
 import java.util.UUID;
 
 @Entity
+@Table(name = "metric_fields")
 public class MetricField {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private String description;
     private MetricFieldType type;
     @ManyToOne
+    @JsonIgnore
     private ApplicationMetricsSchema schema;
 
     public MetricField() {}

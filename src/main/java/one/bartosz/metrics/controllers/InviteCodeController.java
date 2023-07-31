@@ -44,7 +44,7 @@ public class InviteCodeController {
         return new Response(HttpStatus.OK).addAdditionalData(inviteCodeById).toResponseEntity();
     }
 
-    @DeleteMapping("")
+    @GetMapping("")
     @ResponseBody
     public ResponseEntity<Response> getAllUserInviteCodes(@AuthenticationPrincipal User user) {
         List<InviteCode> allInviteCodesByUser = inviteCodeService.getAllInviteCodesByUser(user);

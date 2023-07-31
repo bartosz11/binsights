@@ -21,7 +21,7 @@ public class ApplicationService {
     public ApplicationService(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
     }
-
+    //todo beautify duplicate influx bucket/name error messages
     public Application createApplication(ApplicationCDO cdo) throws InvalidNameException {
         String name = cdo.getName();
         if (name == null || name.isEmpty() || name.isBlank())
