@@ -12,6 +12,10 @@ public class ApplicationCDO {
     @NotBlank
     private String name;
     private String influxDBBucketName;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    private String influxDBRetention;
 
     public String getName() {
         return name;
@@ -28,6 +32,15 @@ public class ApplicationCDO {
 
     public ApplicationCDO setInfluxDBBucketName(String influxDBBucketName) {
         this.influxDBBucketName = influxDBBucketName;
+        return this;
+    }
+
+    public String getInfluxDBRetention() {
+        return influxDBRetention;
+    }
+
+    public ApplicationCDO setInfluxDBRetention(String influxDBRetention) {
+        this.influxDBRetention = influxDBRetention;
         return this;
     }
 }

@@ -17,6 +17,8 @@ public class Application {
     private String name;
     @Column(unique = true)
     private String influxDBBucketName;
+    //todo validation of this value
+    private String influxDBRetention;
     @OneToMany(cascade = CascadeType.ALL)
     //there's a dedicated endpoint for fetching schemas of an application
     @JsonIgnore
@@ -28,6 +30,7 @@ public class Application {
         this.name = cdo.getName();
         String dbBucketName = cdo.getInfluxDBBucketName();
         this.influxDBBucketName = !(dbBucketName == null || dbBucketName.isBlank() || dbBucketName.isEmpty()) ? dbBucketName : this.name;
+        this.influxDBRetention = cdo.getInfluxDBRetention();
     }
 
     public UUID getId() {
@@ -63,6 +66,15 @@ public class Application {
 
     public Application setInfluxDBBucketName(String influxDBBucketName) {
         this.influxDBBucketName = influxDBBucketName;
+        return this;
+    }
+
+    public String getInfluxDBRetention() {
+        return influxDBRetention;
+    }
+
+    public Application setInfluxDBRetention(String influxDBRetention) {
+        this.influxDBRetention = influxDBRetention;
         return this;
     }
 }
