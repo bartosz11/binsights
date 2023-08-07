@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                         //.requestMatchers("/assets/**").permitAll()
                         //all login and register requests
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/metrics/post").permitAll()
                         //actuator requests
                         .requestMatchers("/app/**").permitAll()
                         .anyRequest().authenticated());
