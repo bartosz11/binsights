@@ -70,7 +70,7 @@ public class ApplicationController {
 
     @PostMapping("/{id}/schema")
     @ResponseBody
-    public ResponseEntity<Response> createNewSchema(@PathVariable UUID id, @RequestBody @Valid ApplicationMetricsSchemaCDO cdo) throws SchemaVersionPresentException, DuplicateFieldException, EntityNotFoundException {
+    public ResponseEntity<Response> createNewSchema(@PathVariable UUID id, @RequestBody @Valid ApplicationMetricsSchemaCDO cdo) throws SchemaVersionPresentException, DuplicateFieldException, EntityNotFoundException, InvalidNameException {
         ApplicationMetricsSchema applicationMetricsSchema = applicationMetricsSchemaService.createApplicationSchema(id, cdo);
         return new Response(HttpStatus.CREATED).addAdditionalData(applicationMetricsSchema).toResponseEntity();
     }

@@ -1,21 +1,18 @@
 package one.bartosz.metrics.models;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 //Creation Data Object :)
 //very "me" thing to create
 public class ApplicationCDO {
-    @NotNull
-    @NotEmpty
     @NotBlank
     private String name;
     private String influxDBBucketName;
     @NotNull
-    @NotEmpty
-    @NotBlank
-    private String influxDBRetention;
+    @Min(value = 0)
+    private int influxDBRetention;
 
     public String getName() {
         return name;
@@ -35,11 +32,11 @@ public class ApplicationCDO {
         return this;
     }
 
-    public String getInfluxDBRetention() {
+    public int getInfluxDBRetention() {
         return influxDBRetention;
     }
 
-    public ApplicationCDO setInfluxDBRetention(String influxDBRetention) {
+    public ApplicationCDO setInfluxDBRetention(int influxDBRetention) {
         this.influxDBRetention = influxDBRetention;
         return this;
     }

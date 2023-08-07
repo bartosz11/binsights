@@ -24,6 +24,8 @@ dependencies {
     implementation 'com.auth0:java-jwt:4.4.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
+    implementation "com.influxdb:influxdb-client-java:6.10.0"
+    implementation "com.influxdb:flux-dsl:6.10.0"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }

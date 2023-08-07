@@ -1,5 +1,6 @@
 package one.bartosz.metrics.services;
 
+import com.influxdb.client.domain.Bucket;
 import jakarta.transaction.Transactional;
 import one.bartosz.metrics.exceptions.EntityNotFoundException;
 import one.bartosz.metrics.exceptions.InvalidNameException;
@@ -7,6 +8,7 @@ import one.bartosz.metrics.models.Application;
 import one.bartosz.metrics.models.ApplicationCDO;
 import one.bartosz.metrics.models.RenameRequest;
 import one.bartosz.metrics.repositories.ApplicationRepository;
+import one.bartosz.metrics.repositories.InfluxDBRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,22 +19,28 @@ import java.util.UUID;
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
+    private final InfluxDBRepository influxDBRepository;
 
-    public ApplicationService(ApplicationRepository applicationRepository) {
+    public ApplicationService(ApplicationRepository applicationRepository, InfluxDBRepository influxDBRepository) {
         this.applicationRepository = applicationRepository;
+        this.influxDBRepository = influxDBRepository;
     }
-    //todo beautify duplicate influx bucket/name error messages
     public Application createApplication(ApplicationCDO cdo) throws InvalidNameException {
         String name = cdo.getName();
         if (name == null || name.isEmpty() || name.isBlank())
             throw new InvalidNameException("Name can't be empty or blank.");
+        //there's some "default value setting" happening in constructor so that's why I instantiate it here and not directly before .save
         Application application = new Application(cdo);
+        if (applicationRepository.existsByInfluxDBBucketName(application.getInfluxDBBucketName()))
+            throw new InvalidNameException("Given InfluxDB bucket name is already taken.");
+        Bucket bucket = influxDBRepository.createBucket(application.getName(), application.getInfluxDBRetention());
+        application.setInfluxDBBucketID(bucket.getId());
         return applicationRepository.save(application);
     }
 
     public void deleteApplication(UUID id) throws EntityNotFoundException {
         Application application = retrieveEntity(id);
-        //todo influxdb logic?
+        influxDBRepository.deleteBucket(application.getInfluxDBBucketID());
         applicationRepository.delete(application);
     }
 

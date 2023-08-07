@@ -17,8 +17,9 @@ public class Application {
     private String name;
     @Column(unique = true)
     private String influxDBBucketName;
-    //todo validation of this value
-    private String influxDBRetention;
+    @Column(unique = true)
+    private String influxDBBucketID;
+    private int influxDBRetention;
     @OneToMany(cascade = CascadeType.ALL)
     //there's a dedicated endpoint for fetching schemas of an application
     @JsonIgnore
@@ -69,12 +70,21 @@ public class Application {
         return this;
     }
 
-    public String getInfluxDBRetention() {
+    public int getInfluxDBRetention() {
         return influxDBRetention;
     }
 
-    public Application setInfluxDBRetention(String influxDBRetention) {
+    public Application setInfluxDBRetention(int influxDBRetention) {
         this.influxDBRetention = influxDBRetention;
+        return this;
+    }
+
+    public String getInfluxDBBucketID() {
+        return influxDBBucketID;
+    }
+
+    public Application setInfluxDBBucketID(String influxDBBucketID) {
+        this.influxDBBucketID = influxDBBucketID;
         return this;
     }
 }

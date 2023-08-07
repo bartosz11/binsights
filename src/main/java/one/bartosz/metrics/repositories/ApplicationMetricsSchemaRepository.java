@@ -17,4 +17,6 @@ public interface ApplicationMetricsSchemaRepository extends JpaRepository<Applic
     @Override
     @Query("SELECT ms FROM ApplicationMetricsSchema ms LEFT JOIN FETCH ms.fields WHERE ms.id = :id")
     Optional<ApplicationMetricsSchema> findById(UUID id);
+    @Query("SELECT ms FROM ApplicationMetricsSchema ms LEFT JOIN FETCH ms.fields WHERE ms.application.id = :applicationId AND version = :version")
+    Optional<ApplicationMetricsSchema> findByApplicationIdAndVersion(UUID applicationId, String version);
 }

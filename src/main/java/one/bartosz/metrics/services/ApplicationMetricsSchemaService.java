@@ -3,6 +3,7 @@ package one.bartosz.metrics.services;
 import jakarta.transaction.Transactional;
 import one.bartosz.metrics.exceptions.DuplicateFieldException;
 import one.bartosz.metrics.exceptions.EntityNotFoundException;
+import one.bartosz.metrics.exceptions.InvalidNameException;
 import one.bartosz.metrics.exceptions.SchemaVersionPresentException;
 import one.bartosz.metrics.models.Application;
 import one.bartosz.metrics.models.ApplicationMetricsSchema;
@@ -29,7 +30,7 @@ public class ApplicationMetricsSchemaService {
     }
 
 
-    public ApplicationMetricsSchema createApplicationSchema(UUID id, ApplicationMetricsSchemaCDO cdo) throws EntityNotFoundException, SchemaVersionPresentException, DuplicateFieldException {
+    public ApplicationMetricsSchema createApplicationSchema(UUID id, ApplicationMetricsSchemaCDO cdo) throws EntityNotFoundException, SchemaVersionPresentException, DuplicateFieldException, InvalidNameException {
         Application application = retrieveApplication(id);
         //make sure there's no other schema with the same version for this app
         String schemaVersion = cdo.getVersion();
@@ -41,6 +42,7 @@ public class ApplicationMetricsSchemaService {
         List<String> fieldNames = new ArrayList<>();
         for (MetricFieldCDO metricField : cdo.getMetricFields()) {
             String name = metricField.getName();
+            if (name.equalsIgnoreCase("x_schema_version")) throw new InvalidNameException("Field name x_schema_version is reserved.");
             if (fieldNames.contains(name))
                 throw new DuplicateFieldException("Field with name " + name + " is present more than once.");
             fieldNames.add(name);
