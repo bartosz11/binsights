@@ -29,7 +29,7 @@ public class ApplicationController {
 
     @PostMapping("")
     @ResponseBody
-    public ResponseEntity<Response> createApplication(@RequestBody ApplicationCDO cdo) throws InvalidNameException {
+    public ResponseEntity<Response> createApplication(@RequestBody @Valid ApplicationCDO cdo) throws InvalidNameException {
         Application application = applicationService.createApplication(cdo);
         return new Response(HttpStatus.CREATED).addAdditionalData(application).toResponseEntity();
     }
