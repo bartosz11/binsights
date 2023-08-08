@@ -1,7 +1,11 @@
 package one.bartosz.metrics.controllers;
 
 import jakarta.servlet.http.HttpServletResponse;
-import one.bartosz.metrics.exceptions.*;
+import jakarta.validation.Valid;
+import one.bartosz.metrics.exceptions.InvalidCredentialsException;
+import one.bartosz.metrics.exceptions.InvalidInviteCodeException;
+import one.bartosz.metrics.exceptions.UserDisabledException;
+import one.bartosz.metrics.exceptions.UsernameAlreadyTakenException;
 import one.bartosz.metrics.models.AuthRequest;
 import one.bartosz.metrics.models.Response;
 import one.bartosz.metrics.models.User;
@@ -41,7 +45,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<Response> register(@RequestBody AuthRequest authRequest, @RequestParam(required = false) String invite) throws InvalidInviteCodeException, InvalidPasswordException, UsernameAlreadyTakenException {
+    public ResponseEntity<Response> register(@RequestBody @Valid AuthRequest authRequest, @RequestParam(required = false) String invite) throws InvalidInviteCodeException, UsernameAlreadyTakenException {
         User newUser = userService.createNewUser(authRequest, invite);
         return new Response(HttpStatus.CREATED).addAdditionalData(newUser).toResponseEntity();
     }

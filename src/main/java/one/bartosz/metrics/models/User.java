@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private String password;
     private boolean enabled;
     private long lastUpdated;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<InviteCode> inviteCodes;
 
@@ -68,24 +68,29 @@ public class User implements UserDetails {
 
     //Spring's bullshit I've never used
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
+    //end of spring's stuff
 
     public long getLastUpdated() {
         return lastUpdated;
