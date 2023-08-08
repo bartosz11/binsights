@@ -1,5 +1,6 @@
 package one.bartosz.metrics.services;
 
+import jakarta.transaction.Transactional;
 import one.bartosz.metrics.exceptions.InvalidInviteCodeException;
 import one.bartosz.metrics.exceptions.InvalidPasswordException;
 import one.bartosz.metrics.exceptions.UserNotFoundException;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final InviteCodeRepository inviteCodeRepository;

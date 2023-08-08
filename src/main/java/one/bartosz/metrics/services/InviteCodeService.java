@@ -1,17 +1,18 @@
 package one.bartosz.metrics.services;
 
+import jakarta.transaction.Transactional;
 import one.bartosz.metrics.exceptions.EntityNotFoundException;
 import one.bartosz.metrics.exceptions.InvalidDateException;
 import one.bartosz.metrics.models.InviteCode;
 import one.bartosz.metrics.models.User;
 import one.bartosz.metrics.repositories.InviteCodeRepository;
-import one.bartosz.metrics.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
 @Service
+@Transactional
 public class InviteCodeService {
 
     private final InviteCodeRepository inviteCodeRepository;

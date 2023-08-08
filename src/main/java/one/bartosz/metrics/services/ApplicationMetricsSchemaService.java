@@ -42,7 +42,10 @@ public class ApplicationMetricsSchemaService {
         List<String> fieldNames = new ArrayList<>();
         for (MetricFieldCDO metricField : cdo.getMetricFields()) {
             String name = metricField.getName();
+            //reserved names - todo - maybe i want a different exception (code) here?
             if (name.equalsIgnoreCase("x_schema_version")) throw new InvalidNameException("Field name x_schema_version is reserved.");
+            if (name.equalsIgnoreCase("x_ip_address")) throw new InvalidNameException("Field name x_ip_address is reserved.");
+
             if (fieldNames.contains(name))
                 throw new DuplicateFieldException("Field with name " + name + " is present more than once.");
             fieldNames.add(name);

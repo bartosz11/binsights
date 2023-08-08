@@ -14,6 +14,7 @@ public class ApplicationMetricsSchema {
     private UUID id;
     private String version;
     private boolean enabled;
+    private boolean collectIPAddresses;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<MetricField> fields;
     @ManyToOne
@@ -26,6 +27,7 @@ public class ApplicationMetricsSchema {
         cdo.getMetricFields().forEach(fieldCDO -> fields.add(new MetricField(fieldCDO).setSchema(this)));
         this.version = cdo.getVersion();
         this.enabled = cdo.isEnabled();
+        this.collectIPAddresses = cdo.isCollectIPAddresses();
     }
     public UUID getId() {
         return id;
@@ -69,6 +71,15 @@ public class ApplicationMetricsSchema {
 
     public ApplicationMetricsSchema setApplication(Application application) {
         this.application = application;
+        return this;
+    }
+
+    public boolean isCollectIPAddresses() {
+        return collectIPAddresses;
+    }
+
+    public ApplicationMetricsSchema setCollectIPAddresses(boolean collectIPAddresses) {
+        this.collectIPAddresses = collectIPAddresses;
         return this;
     }
 }

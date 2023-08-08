@@ -1,5 +1,6 @@
 package one.bartosz.metrics.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import one.bartosz.metrics.exceptions.EntityNotFoundException;
 import one.bartosz.metrics.exceptions.SchemaDisabledException;
@@ -23,8 +24,15 @@ public class MetricsController {
 
     @PostMapping("/post")
     @ResponseBody
-    public ResponseEntity<Response> postMetrics(@RequestBody @Valid MetricsPostRequest metricsPostRequest) throws SchemaValidationException, EntityNotFoundException, SchemaDisabledException {
-        metricsService.postMetrics(metricsPostRequest);
+    public ResponseEntity<Response> postMetrics(@RequestBody @Valid MetricsPostRequest metricsPostRequest, HttpServletRequest httpServletRequest) throws SchemaValidationException, EntityNotFoundException, SchemaDisabledException {
+        String ip = getIPAddress(httpServletRequest);
+        metricsService.postMetrics(metricsPostRequest, ip);
         return new Response(HttpStatus.NO_CONTENT).toResponseEntity();
+    }
+    //copied from LoggerInterceptor :)
+    private String getIPAddress(HttpServletRequest request) {
+        String forwardedFor = request.getHeader("X-Forwarded-For");
+        if (forwardedFor != null && forwardedFor.length() > 0) return forwardedFor;
+        return request.getRemoteAddr();
     }
 }

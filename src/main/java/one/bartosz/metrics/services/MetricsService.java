@@ -36,7 +36,7 @@ public class MetricsService {
         this.influxDBRepository = influxDBRepository;
     }
 
-    public void postMetrics(MetricsPostRequest metricsPostRequest) throws EntityNotFoundException, SchemaValidationException, SchemaDisabledException {
+    public void postMetrics(MetricsPostRequest metricsPostRequest, String ip) throws EntityNotFoundException, SchemaValidationException, SchemaDisabledException {
         UUID applicationId = UUID.fromString(metricsPostRequest.getApplication());
         Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new EntityNotFoundException("Application with given ID not found."));
         String schemaVersion = metricsPostRequest.getSchemaVersion();
@@ -48,6 +48,7 @@ public class MetricsService {
         //saving logic
         //add our reserved schema version field
         data.put("x_schema_version", schemaVersion);
+        if (schema.isCollectIPAddresses()) data.put("x_ip_address", ip);
         //create a point and write it
         Point point = Point.measurement(metricsPostRequest.getId()).addFields(data).time(Instant.now(), WritePrecision.NS);
         influxDBRepository.writePoint(point, application.getInfluxDBBucketID());
@@ -57,6 +58,7 @@ public class MetricsService {
         //technically there's no limitation but ehh I don't want clients to send it anyway
         //if a client sent valuable data in it'd get lost
         if (data.containsKey("x_schema_version")) throw new SchemaValidationException("Request contains reserved field x_schema_version.");
+        if (data.containsKey("x_ip_address")) throw new SchemaValidationException("Request contains reserved field x_ip_address.");
         if (data.size() > schemaFields.size()) throw new SchemaValidationException("Request contains excess fields that don't exist in the schema with the given version.");
         for (Map.Entry<String, MetricFieldType> field : schemaFields.entrySet()) {
             String fieldName = field.getKey();

@@ -29,9 +29,11 @@ public class ApplicationService {
         String name = cdo.getName();
         if (name == null || name.isEmpty() || name.isBlank())
             throw new InvalidNameException("Name can't be empty or blank.");
+        //todo name already taken validation
         //there's some "default value setting" happening in constructor so that's why I instantiate it here and not directly before .save
         Application application = new Application(cdo);
         if (applicationRepository.existsByInfluxDBBucketName(application.getInfluxDBBucketName()))
+            //todo change this exception - I guess I want a different code than 400
             throw new InvalidNameException("Given InfluxDB bucket name is already taken.");
         Bucket bucket = influxDBRepository.createBucket(application.getName(), application.getInfluxDBRetention());
         application.setInfluxDBBucketID(bucket.getId());
