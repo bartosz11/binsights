@@ -35,7 +35,7 @@ public class ApplicationService {
         if (applicationRepository.existsByInfluxDBBucketName(application.getInfluxDBBucketName()))
             //todo change this exception - I guess I want a different code than 400
             throw new InvalidNameException("Given InfluxDB bucket name is already taken.");
-        Bucket bucket = influxDBRepository.createBucket(application.getName(), application.getInfluxDBRetention());
+        Bucket bucket = influxDBRepository.createBucket(application.getInfluxDBBucketName(), application.getInfluxDBRetention());
         application.setInfluxDBBucketID(bucket.getId());
         return applicationRepository.save(application);
     }
