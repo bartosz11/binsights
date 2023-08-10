@@ -11,7 +11,9 @@ import one.bartosz.metrics.models.Response;
 import one.bartosz.metrics.models.User;
 import one.bartosz.metrics.security.JWTTokenUtils;
 import one.bartosz.metrics.services.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,11 +28,13 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JWTTokenUtils jwtTokenUtils;
+    private final boolean secureCookies;
 
-    public AuthController(UserService userService, AuthenticationManager authenticationManager, JWTTokenUtils jwtTokenUtils) {
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, JWTTokenUtils jwtTokenUtils, @Value("${metrics.secure-cookies}") boolean secureCookies) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtils = jwtTokenUtils;
+        this.secureCookies = secureCookies;
     }
 
     @PostMapping("/login")
@@ -39,7 +43,8 @@ public class AuthController {
         User user = (User) userService.loadUserByUsername(authRequest.getUsername());
         authenticate(authRequest);
         String s = jwtTokenUtils.generateToken(user);
-        //todo implement cookies here later
+        ResponseCookie responseCookie = ResponseCookie.from("auth-token", s).httpOnly(false).sameSite("Strict").secure(secureCookies).path("/").maxAge((int) JWTTokenUtils.VALIDITY / 1000).build();
+        httpResponse.addHeader("Set-Cookie", responseCookie.toString());
         return new Response(HttpStatus.OK).addAdditionalField("token", s).toResponseEntity();
     }
 
