@@ -3,7 +3,7 @@ package one.bartosz.metrics.models;
 import jakarta.validation.constraints.NotBlank;
 
 public class RenameRequest {
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank.")
     private String name;
 
     public String getName() {

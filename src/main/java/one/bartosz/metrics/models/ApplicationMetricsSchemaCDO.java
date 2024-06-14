@@ -8,14 +8,14 @@ import java.util.Set;
 
 public class ApplicationMetricsSchemaCDO {
 
-    @NotBlank
+    @NotBlank(message = "Version cannot be blank.")
     private String version;
-    @NotNull
+    @NotNull(message = "Schema must be enabled or disabled. Field enabled cannot be null.")
     private boolean enabled;
     //Using a Set to ensure there are no duplicates partially
-    @NotNull
+    @NotNull(message = "Schema must contain at least a single field.")
     private Set<@Valid MetricFieldCDO> metricFields;
-    @NotNull
+    @NotNull(message = "Field collectIPAddresses cannot be null.")
     private boolean collectIPAddresses;
 
     public String getVersion() {

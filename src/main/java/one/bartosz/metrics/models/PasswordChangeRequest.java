@@ -7,9 +7,9 @@ public class PasswordChangeRequest {
 
     //we don't validate old password - if user set it to something different for example using SQL we shouldn't prevent him from changing the password via API because of his former action
     private String oldPassword;
-    @Pattern(regexp = UserService.PASSWORD_VALIDATION_PATTERN)
+    @Pattern(regexp = UserService.PASSWORD_VALIDATION_PATTERN, message="New password must consist of at least 8 characters, must contain at least: 1 uppercase letter, 1 lowercase letter, 1 digit and one special character.")
     private String newPassword;
-    @Pattern(regexp = UserService.PASSWORD_VALIDATION_PATTERN)
+    @Pattern(regexp = UserService.PASSWORD_VALIDATION_PATTERN, message="New password must consist of at least 8 characters, must contain at least: 1 uppercase letter, 1 lowercase letter, 1 digit and one special character.")
     private String confirmNewPassword;
 
     public String getOldPassword() {

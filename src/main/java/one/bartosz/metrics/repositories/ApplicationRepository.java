@@ -12,4 +12,5 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
 
     Optional<Application> findByName(String name);
     boolean existsByInfluxDBBucketName(String influxDBBucketName);
+    boolean existsByName(String name);
 }

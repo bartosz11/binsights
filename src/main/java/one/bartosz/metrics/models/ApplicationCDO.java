@@ -7,11 +7,11 @@ import jakarta.validation.constraints.NotNull;
 //Creation Data Object :)
 //very "me" thing to create
 public class ApplicationCDO {
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank.")
     private String name;
     private String influxDBBucketName;
-    @NotNull
-    @Min(value = 0)
+    @NotNull(message = "InfluxDB retention value cannot be null.")
+    @Min(value = 0, message = "InfluxDB retention value must be greater than 0.")
     private int influxDBRetention;
 
     public String getName() {

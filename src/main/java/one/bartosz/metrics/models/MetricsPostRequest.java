@@ -6,12 +6,13 @@ import java.util.HashMap;
 
 public class MetricsPostRequest {
 
-    @NotBlank
+    @NotBlank(message = "Application ID cannot be blank.")
     private String application;
-    @NotBlank
+    @NotBlank(message = "Schema version cannot be blank.")
     private String schemaVersion;
     //A form of identification - this app is made mostly for identifiable metrics but can also suit non-identifiable
-    @NotBlank
+    //according to the comment above this annotation should probably get removed, but making non-identifiable metrics collector is quite complex and could become another project
+    @NotBlank(message = "ID cannot be blank.")
     private String id;
     //No validation - schema can even be empty if user wants it to be
     private HashMap<String, Object> data;

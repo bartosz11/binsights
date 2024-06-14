@@ -32,7 +32,7 @@ public class MetricsController {
     //copied from LoggerInterceptor :)
     private String getIPAddress(HttpServletRequest request) {
         String forwardedFor = request.getHeader("X-Forwarded-For");
-        if (forwardedFor != null && forwardedFor.length() > 0) return forwardedFor;
+        if (forwardedFor != null && !forwardedFor.isEmpty()) return forwardedFor;
         return request.getRemoteAddr();
     }
 }

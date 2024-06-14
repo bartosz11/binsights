@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import one.bartosz.metrics.models.enums.MetricFieldType;
 
 public class MetricFieldCDO {
-    @NotBlank
+    @NotBlank(message = "Metric field name cannot be blank.")
     private String name;
     private String description;
-    @NotNull
+    @NotNull(message = "Metric field type cannot be null.")
     private MetricFieldType type;
 
     public String getName() {

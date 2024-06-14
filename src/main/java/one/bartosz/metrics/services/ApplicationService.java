@@ -27,9 +27,7 @@ public class ApplicationService {
     }
     public Application createApplication(ApplicationCDO cdo) throws InvalidNameException {
         String name = cdo.getName();
-        if (name == null || name.isEmpty() || name.isBlank())
-            throw new InvalidNameException("Name can't be empty or blank.");
-        //todo name already taken validation
+        if (applicationRepository.existsByName(name)) throw new InvalidNameException("Given application name is already taken.");
         //there's some "default value setting" happening in constructor so that's why I instantiate it here and not directly before .save
         Application application = new Application(cdo);
         if (applicationRepository.existsByInfluxDBBucketName(application.getInfluxDBBucketName()))
@@ -60,8 +58,8 @@ public class ApplicationService {
 
     public Application renameApplication(UUID id, RenameRequest renameRequest) throws InvalidNameException, EntityNotFoundException {
         String name = renameRequest.getName();
-        if (name == null || name.isEmpty() || name.isBlank())
-            throw new InvalidNameException("New name can't be empty or blank.");
+        if (applicationRepository.existsByName(name))
+            throw new InvalidNameException("New name is already taken.");
         Application application = retrieveEntity(id);
         return applicationRepository.save(application.setName(name));
     }
