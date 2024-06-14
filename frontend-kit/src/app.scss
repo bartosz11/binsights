@@ -1,0 +1,116 @@
+@use 'node_modules/@picocss/pico/scss/pico' with (
+	$semantic-root-element: '#root',
+	$enable-semantic-container: true,
+	$enable-classes: false
+);
+
+@use 'node_modules/@picocss/pico/scss/colors/utilities';
+
+button {
+	padding: 8px;
+}
+
+// Ensure tooltips always have 1.5 line height because I have to set it to 0 on action buttons and they inherit it
+ [data-tooltip]::before {
+	line-height: 1.5;
+}
+
+.header-with-button {
+	display: flex;
+	align-items: baseline;
+	margin-bottom: 1rem;
+	flex-wrap: wrap;
+	h1 { 
+		margin-right: 1rem;
+	}
+}
+
+.pico-text-red { 
+	color: var(--pico-color-red-500);
+}
+
+.form-hint { 
+	color: var(--pico-del-color);
+}
+
+.btn-red { 
+	border-color: var(--pico-color-red-500);
+	background-color: var(--pico-color-red-500);
+}
+
+.btn-green { 
+	border-color: var(--pico-color-jade-500);
+	background-color: var(--pico-color-jade-500);
+}
+
+.btn-blue {
+	border-color: var(--pico-secondary-border);
+	background-color: var(--pico-secondary-background);
+}
+
+.no-border { 
+	border: 0;
+}
+
+.line-h-0 { 
+	line-height: 0;
+}
+
+.h-screen { 
+	height: 100vh;
+}
+
+.place-items-center { 
+	place-items: center;
+}
+
+.grid-mine { 
+	display: grid;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	/* allow click-through to backdrop */
+	pointer-events: none;
+}
+
+.contents {
+	min-width: 240px;
+	border-radius: 6px;
+	padding: 16px;
+	background: var(--pico-background-color);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	pointer-events: auto;
+}
+
+.actions {
+	margin-top: 32px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.backdrop {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+
+span.loading::before { 
+    font-size:  3rem;
+}
+
+

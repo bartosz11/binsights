@@ -1,10 +1,12 @@
 package one.bartosz.metrics.models;
 
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
 import one.bartosz.metrics.services.UserService;
 
 public class AuthRequest {
-
+    
+    @NotBlank
     private String username;
     //shouldn't be a problem since we enforce the validation rules using @Valid, so we can just not enforce them in /auth/login
     @Pattern(regexp = UserService.PASSWORD_VALIDATION_PATTERN)

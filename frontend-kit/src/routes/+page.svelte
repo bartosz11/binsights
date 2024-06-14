@@ -1,0 +1,1 @@
+<!-- Literally just a blank page so user won't see "Internal server error", I may add something here later /shrug -->

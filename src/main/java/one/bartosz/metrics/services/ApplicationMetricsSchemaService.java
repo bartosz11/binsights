@@ -76,6 +76,11 @@ public class ApplicationMetricsSchemaService {
         schema.setEnabled(enable);
         applicationMetricsSchemaRepository.save(schema);
     }
+
+    public ApplicationMetricsSchema getSchemaByAppIdAndVersion(UUID id, String version) throws EntityNotFoundException {
+        return applicationMetricsSchemaRepository.findByApplicationIdAndVersion(id, version).orElseThrow(() -> new EntityNotFoundException("Schema with given version for given application couldn't be found."));
+    }
+
     //entity - whatever the service is supposed to handle
     private ApplicationMetricsSchema retrieveEntity(UUID id) throws EntityNotFoundException {
         return applicationMetricsSchemaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Application metrics schema with given ID couldn't be found."));

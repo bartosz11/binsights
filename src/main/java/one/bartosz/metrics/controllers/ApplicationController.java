@@ -80,4 +80,12 @@ public class ApplicationController {
         List<ApplicationMetricsSchema> allApplicationSchemasByApplication = applicationMetricsSchemaService.getAllApplicationSchemasByApplication(id);
         return new Response(HttpStatus.OK).addAdditionalData(allApplicationSchemasByApplication).toResponseEntity();
     }
+
+    @GetMapping("/{id}/schema/{version}")
+    @ResponseBody
+    public ResponseEntity<Response> getSchemaByAppIdAndVersion(@PathVariable UUID id, @PathVariable String version) throws EntityNotFoundException {
+        ApplicationMetricsSchema schema = applicationMetricsSchemaService.getSchemaByAppIdAndVersion(id, version);
+        return new Response(HttpStatus.OK).addAdditionalData(schema).toResponseEntity();
+    }
+
 }
