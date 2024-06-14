@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { IconAlertTriangleFilled } from '@tabler/icons-svelte';
 
-	export let error: Error;
+	export let error: Error | null;
 </script>
 
 <div class="error-page">
@@ -10,7 +10,9 @@
 		<span class="pico-text-red"><IconAlertTriangleFilled /></span>
 		Something went wrong
 	</h1>
+	{#if error?.message}
 	<p>{error.message}</p>
+	{/if}
 </div>
 
 <style>
