@@ -4,7 +4,6 @@
 	import { goto } from '$app/navigation';
 	import http from '$lib/httpUtil';
 	import { Modals, closeModal } from 'svelte-modals';
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { Toaster } from 'svelte-french-toast';
 	import { deleteCookie } from '$lib/cookieUtil';
@@ -19,6 +18,9 @@
 			if (pathname === '/auth/login' || pathname === '/auth/register') {
 				success("You're already logged in, you'll get redirected to dashboard soon.");
 				goto('/dashboard/applications');
+			}
+			if (pathname === "/")  {
+				goto("/dashboard/applications");
 			}
 		} catch (error) {
 			if (error.response?.status === 403) {
